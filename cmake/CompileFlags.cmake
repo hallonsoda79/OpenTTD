@@ -121,7 +121,9 @@ macro(compile_flags)
         endif()
 
         if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-            if (NOT CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
+            # If CMAKE_OSX_ARCHITECTURES is empty, use CMAKE_SYSTEM_PROCESSOR as a fallback
+            if (NOT CMAKE_OSX_ARCHITECTURES STREQUAL "arm64"
+                AND NOT(CMAKE_OSX_ARCHITECTURES STREQUAL "" AND CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64"))
                 include(CheckCXXCompilerFlag)
                 check_cxx_compiler_flag("-mno-sse4" NO_SSE4_FOUND)
 
